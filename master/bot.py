@@ -11,7 +11,19 @@ import nltk
 
 
 from topnews import getTopNews
-
+from meet import grouping
+from pnr import getpnr
+from jobs import getjobs
+from currency import fetch_currency_exchange_rate
+from weather import get_weather
+from joke import lame_jokes
+from translate import translate_message
+from hack import eventz
+# from labour import Slave
+from labour import Component_bot
+from labour import Connection_tester_bot
+from labour import Solder_bot
+from labour import IC_bot
 
 BOT_MAIL = "master-bot@zulipchat.com"
 
@@ -96,6 +108,104 @@ class Master(object):
                         message += '\n\n'
                 except:
                     message = "Nothing new in the world ... Go Sleep"
+
+            elif content[1].lower() == "meetup":
+                name = ""
+                for i in range(2,len(content)-1):
+                    name+=content[i]
+                    name+=" "
+                name+=content[len(content)-1]
+                
+                dicti = grouping(name)
+                message += "**MeetUp Event Details**" + '\n'
+                message += "Name: " + dicti["Name"] + '\n'
+                message += "Organizer: " + dicti["Organizer"] + '\n'
+                message += "City: " + dicti["City"] + '\n'
+                message += "Next Event: " + dicti["Upcoming Event"]["Event Name"] + '\n'
+                message += "RSVP: " + str(dicti["Upcoming Event"]["RSVP"]) + '\n'
+                message += "Time: " + dicti["Upcoming Event"]["Time"] + '\n'
+                message += "Link: " + dicti["Link"] + '\n'
+                
+            elif content[1].lower() == "pnr":
+                num = int(content[2])
+                try:
+                    message = getpnr(num)
+                except:
+                    message = "Try valid PNR"
+                    
+            elif content[1].lower() == "translate":
+                try:
+                    message = content[2:]
+                    message = " ".join(message)
+                    message = translate_message(message)
+                except:
+                    message = "Error in format"
+
+            elif content[1].lower() == "jobs":
+                try:
+                    message = getjobs()
+                except:
+                    message = "Connection Error"
+
+            elif content[1].lower() == "currency":
+                if len(content) == 3 and content[2].lower() != "":
+                   
+                    currency = fetch_currency_exchange_rate("", content[2].upper())
+                    message += "**Showing all currency conversions for 1 {}:**\n".format(content[2].upper())
+                    for curr in currency['rates']:
+                        message += "1 {} = ".format(content[2].upper()) + "{}".format(format(currency['rates'][curr], '.2f')) + " {}\n".format(curr)
+                    message += "Last Updated: *{}*".format(currency['date'])
+                elif len(content) == 5 and content[2].lower() != "" and content[4].lower() != "":
+                   
+                    currency = fetch_currency_exchange_rate(content[2].upper(), content[4].upper())
+                    message += "1 {} = ".format(content[4].upper()) + "{}".format(format(currency['rates'][content[2].upper()], '.2f')) + " {}\n".format(content[4].upper())
+                    message += "Last Updated: *{}*".format(currency['date'])
+                else:
+                    message = "Please ask the query in correct format."
+
+            elif content[1].lower() == "joke":
+                try:
+                    message = lame_jokes()
+                except:
+                    message = "Not that lame though .. try something else"
+
+            elif content[1].lower() == "weather":
+                try:
+                    if len(content) > 2 and content[2].lower() != "":
+                        
+                        weather = get_weather(content[2].lower())
+                        if str(weather['cod']) != "404":
+                            message += "**Weather status of {}**\n".format(content[2].lower())
+                            message += "Climate: **{}**\n".format(str(weather['weather'][0]['description']))
+                            message += "Temperature: **{}**\n".format(str(weather['main']['temp'] - 273) + "° C")
+                            message += "Pressure: **{}**\n".format(str(weather['main']['pressure']) + " hPa")
+                            message += "Humidity: **{}**\n".format(str(weather['main']['humidity']) + "%")
+                            message += "Wind Speed: **{}**".format(str(weather['wind']['speed']) + " $$m/s^2$$")
+                        else:
+                            message = "City not found!\nabc"
+                    else:
+                        message = "Please add a location name."
+                except:
+                    message = "Something went wrong"
+
+            elif content[1].lower() == "contest":
+                try:
+                    message = eventz()
+                except:
+                    message = "Check connection"
+            
+            else:
+                message += "Show news according to your choice : **Master news topic-name**\n"
+                message += "Show MeetUp group details and next event status : **Master meetup group-name**\n"
+                message += "Crack a joke ... even a lame one : **Master joke**\n"
+                message += "Get the current currency conversion ratios : **Master currency currency-1 to currency-2** \nor **Master currency currency-1** \n"
+                message += "Get a list of upcoming coding events: **Master contest**\n"
+                message += "Get weather status of a location: **Master weather location**\n"
+                message += "Get a list of new job openings in your locality: **Master jobs**\n"
+                message += "Translate a word or sentence to English: **Master translate word/sentence**\n"
+                message += "Check your pnr status: **Master pnr pnr-number**\n"
+                
+
 
            
             self.client.send_message({
