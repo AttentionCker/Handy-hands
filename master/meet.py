@@ -29,7 +29,3 @@ def grouping(name):
     }
     #print(result)
     return result
-
-#x = "GDG Ranchi"
-#zz = grouping(x)
-#print(zz["Upcoming Event"]["RSVP"])

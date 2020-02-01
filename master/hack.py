@@ -1,6 +1,6 @@
 import requests
-username = 'erik35'
-api_key = 'f35aba3b32a905deb2555b545c8220c17b235ea9'
+username = 'BuckBeak'
+api_key = 'vEmLU3bpNq7poVGFy4YYgUXVhKw48YSN'
 
 def eventz():
     url = "https://clist.by/api/v1/contest/?username={}&api_key={}".format(username,api_key)

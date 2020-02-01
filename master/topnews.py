@@ -1,5 +1,5 @@
 import requests
-api_key = '49e6ddb018f8482ca8a1720084ab49f5'
+api_key = 'vEmLU3bpNq7poVGFy4YYgUXVhKw48YSN'
 
 def getTopNews(topic):
     news = {}

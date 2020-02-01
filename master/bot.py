@@ -21,10 +21,10 @@ from translate import translate_message
 from hack import eventz
 
 # files for bot controlled
-from labour import Component_bot
-from labour import Connection_tester_bot
-from labour import Solder_bot
-from labour import IC_bot
+from labor import Component_bot
+from labor import Connection_tester_bot
+from labor import Solder_bot
+from labor import IC_bot
 
 
 BOT_MAIL = "master-bot@zulipchat.com"
@@ -34,7 +34,7 @@ class Master(object):
 
     def __init__(self):
         self.client = zulip.Client(config_file="../master.zuliprc")
-        print("Master Bot at work to controll you all...")
+        print("Master Bot at work to control you all...")
         
         # client_list = self.client.get_members()
         # print("\nClients in the org : ")
@@ -88,11 +88,11 @@ class Master(object):
             
             # task keywords for slaves
             task1 = ["task1", "connections"]
-            task2 = ["task2", "connect-resistor", "connect circuit", "connect LED", "connect capacitor", "built ciruit"]
-            task3 = ["task 3", "solder"]
+            task2 = ["task2", "connect-resistor", "connect-circuit", "connect-LED", "connect-capacitor", "connect-ciruit"]
+            task3 = ["task3", "solder"]
             task4 = ["task4", "connect-IC"]
             greet = ["hello", "hi","hola","hey","wassup"]
-            news = ["news", "happenings today"]
+            news = ["news", "happenings"]
 
             # PERFORMING SPECIFIC COMMANDS
                 
@@ -101,8 +101,8 @@ class Master(object):
             # looking through entire test will take longer
             
             if content[1].lower() in greet:
-                print("master is greeting")
-                message = "Hola .. ever wondered why am I the master because I have the power to control you **Alll**"
+                # print("master is greeting")
+                message = "Hola .. I am the master bot of **HANDY-HANDS**, because I have the power to make and control labors."
 
             # SHOWING NEWS ITEMS
             elif "news" in content:
@@ -110,10 +110,8 @@ class Master(object):
                 try:
                     news = getTopNews(topic)
                     for i in range(10):
-                        message += "**"+news[i]['title']+"**" 
-                        message += '\n'
-                        message += news[i]['desc']
-                        message += '\n\n'
+                        message += "**"+news[i]['title']+"**"+"\n"+news[i]['desc']+"\n\n" 
+                
                 except:
                     message = "Nothing new in the world ... Go Sleep"
 
@@ -125,16 +123,14 @@ class Master(object):
                     name+=" "
                 name+=content[len(content)-1]
                 
-                dicti = grouping(name)
-                message += "**MeetUp Event Details**" + '\n'
-                message += "Name: " + dicti["Name"] + '\n'
-                message += "Organizer: " + dicti["Organizer"] + '\n'
-                message += "City: " + dicti["City"] + '\n'
-                message += "Next Event: " + dicti["Upcoming Event"]["Event Name"] + '\n'
-                message += "RSVP: " + str(dicti["Upcoming Event"]["RSVP"]) + '\n'
-                message += "Time: " + dicti["Upcoming Event"]["Time"] + '\n'
-                message += "Link: " + dicti["Link"] + '\n'
-            
+                meetup_details = grouping(name)
+                message = "**MeetUp Event Details :**\n\
+                            Name : " + meetup_details["Name"] + "\n\
+                            Oragnizer : " + meetup_details["Organizer"] + "\n\
+                            City : " + meetup_details["City"] + "\n\
+                            Next Event : " + meetup_details["Upcoming Event"]["Event Name"] + "\n\
+                            Time : " + meetup_details["Upcoming Event"]["Time"] + "\n"
+                
             # PNR DETAILS
             elif content[1].lower() == "pnr":
                 num = int(content[2])
@@ -190,14 +186,14 @@ class Master(object):
                         
                         weather = get_weather(content[2].lower())
                         if str(weather['cod']) != "404":
-                            message += "**Weather status of {}**\n".format(content[2].lower())
-                            message += "Climate: **{}**\n".format(str(weather['weather'][0]['description']))
-                            message += "Temperature: **{}**\n".format(str(weather['main']['temp'] - 273) + "° C")
-                            message += "Pressure: **{}**\n".format(str(weather['main']['pressure']) + " hPa")
-                            message += "Humidity: **{}**\n".format(str(weather['main']['humidity']) + "%")
-                            message += "Wind Speed: **{}**".format(str(weather['wind']['speed']) + " $$m/s^2$$")
+                            message = "**Weather status of {}**\n".format(content[2].lower()) + \
+                                        "Climate: **{}**\n".format(str(weather['weather'][0]['description'])) +\
+                                        "Temperature: **{}**\n".format(str(weather['main']['temp'] - 273) + "° C") +\
+                                        "Pressure: **{}**\n".format(str(weather['main']['pressure']) + " hPa") +\
+                                        "Humidity: **{}**\n".format(str(weather['main']['humidity']) + "%") +\
+                                        "Wind Speed: **{}**".format(str(weather['wind']['speed']) + " $$m/s^2$$") 
                         else:
-                            message = "City not found!\nabc"
+                            message = "City not found!\n"
                     else:
                         message = "Please add a location name."
                 except:
@@ -215,35 +211,39 @@ class Master(object):
             # MASTER BOT CALLS THE SLAVE BOTS FOR WORK.
 
             # Respective slave objects will be called reading the specified task
-            elif content[1].lower() in task1:
+            elif content[1].lower() == "task1" or content[1] in task1:
                 # call slave 1
                 s1 = Connection_tester_bot()
                 s1.process(msg)
 
-            elif content[1].lower() in task2:
+            elif content[1].lower() == "task2" or content[1] in task2:
                 # call slave 2
                 s2 = Component_bot()
-                s2.client.call_on_each_message(s2.process)
+                s2.process(msg)
 
-            elif content[1].lower() in task3:
+            elif content[1].lower() == "task3" or content[1] in task3:
                 # call slave 3
                 s3 = Solder_bot()
-                s3.client.call_on_each_message(s3.process)
+                s3.process(msg)
 
-            elif content[1].lower() in task4:
+            elif content[1].lower() == "task4" or content[1] in task4:
                 s4 = IC_bot()
-                s4.client.call_on_each_message(s4.process)
+                s4.process(msg)
 
             else:
-                message += "Show news according to your choice : **Master news topic-name**\n"
-                message += "Show MeetUp group details and next event status : **Master meetup group-name**\n"
-                message += "Crack a joke ... even a lame one : **Master joke**\n"
-                message += "Get the current currency conversion ratios : **Master currency currency-1 to currency-2** \nor **Master currency currency-1** \n"
-                message += "Get a list of upcoming coding events: **Master contest**\n"
-                message += "Get weather status of a location: **Master weather location**\n"
-                message += "Get a list of new job openings in your locality: **Master jobs**\n"
-                message += "Translate a word or sentence to English: **Master translate word/sentence**\n"
-                message += "Check your pnr status: **Master pnr pnr-number**\n"
+                message = "Being Master Bot I do the following things: \n\
+                            **Control sub-ordinate bots** and give them tasks. : *master task1*\n\
+                            **Crack a joke** : *master joke*\n\
+                            **Show news** : *master news*\n\
+                            **List of incoming events** : *master contest*\n\
+                            **Weather report of a place** : *master weather <place>*\n\
+                            **Get a list of Jobs** : *master jobs*\n\
+                            **Currency Conversion** : *master currency <currency-1> to <currency-20>*\n\
+                            **Translate to English** : master translate <word/sentence>\n\
+                            **Check pnr status** : *master panr <pnr-number>*\n\
+                            **Show Meetup** : *master meetup <group-name>*\n\n\
+                            **Don't forget to type master before every command**\n\
+                            **For command to control sub-ordinate bot through master use '-' to specify task : master connect-circuit"
 
            
             self.client.send_message({
