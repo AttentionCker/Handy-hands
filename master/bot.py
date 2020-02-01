@@ -19,11 +19,13 @@ from weather import get_weather
 from joke import lame_jokes
 from translate import translate_message
 from hack import eventz
-# from labour import Slave
+
+# files for bot controlled
 from labour import Component_bot
 from labour import Connection_tester_bot
 from labour import Solder_bot
 from labour import IC_bot
+
 
 BOT_MAIL = "master-bot@zulipchat.com"
 
@@ -34,11 +36,11 @@ class Master(object):
         self.client = zulip.Client(config_file="../master.zuliprc")
         print("Master Bot at work to controll you all...")
         
-        client_list = self.client.get_members()
-        print("\nClients in the org : ")
+        # client_list = self.client.get_members()
+        # print("\nClients in the org : ")
         # print(type(client_list))
-        for name in range(len(client_list)):
-            print(client_list['members'][name]['full_name'])
+        # for name in range(len(client_list)):
+        #     print(client_list['members'][name]['full_name'])
 
         self.subscribe_all()
 
@@ -80,19 +82,25 @@ class Master(object):
         stream_name = msg["display_recipient"]
 
         # Master needs to be entered before specifying any task
-        if content[0].lower() == "@**master**":
+        if content[0].lower() == "@**master**" or content[0].lower() == "master":
             message = ""
 
-        
-        # PERFORMING SPECIFIC COMMANDS
+            
+            # task keywords for slaves
+            task1 = ["task1", "connections"]
+            task2 = ["task2", "connect-resistor", "connect circuit", "connect LED", "connect capacitor", "built ciruit"]
+            task3 = ["task 3", "solder"]
+            task4 = ["task4", "connect-IC"]
+            greet = ["hello", "hi","hola","hey","wassup"]
+            news = ["news", "happenings today"]
+
+            # PERFORMING SPECIFIC COMMANDS
                 
             # GREETINGS
             # when hello/hi in the first sections of the content 
             # looking through entire test will take longer
-            greet = ["hello", "hi","hola","hey","wassup"]
-            news = ["news", "happenings today"]
-
-            if content[0].lower() in greet or content[1].lower() in greet:
+            
+            if content[1].lower() in greet:
                 print("master is greeting")
                 message = "Hola .. ever wondered why am I the master because I have the power to control you **Alll**"
 
@@ -109,6 +117,7 @@ class Master(object):
                 except:
                     message = "Nothing new in the world ... Go Sleep"
 
+            # MEETUP DETAILS
             elif content[1].lower() == "meetup":
                 name = ""
                 for i in range(2,len(content)-1):
@@ -125,14 +134,16 @@ class Master(object):
                 message += "RSVP: " + str(dicti["Upcoming Event"]["RSVP"]) + '\n'
                 message += "Time: " + dicti["Upcoming Event"]["Time"] + '\n'
                 message += "Link: " + dicti["Link"] + '\n'
-                
+            
+            # PNR DETAILS
             elif content[1].lower() == "pnr":
                 num = int(content[2])
                 try:
                     message = getpnr(num)
                 except:
                     message = "Try valid PNR"
-                    
+
+            # TRANSLATE FUNCTION
             elif content[1].lower() == "translate":
                 try:
                     message = content[2:]
@@ -141,12 +152,14 @@ class Master(object):
                 except:
                     message = "Error in format"
 
+            # GIVES AVAILABLE JOBS DETAILS
             elif content[1].lower() == "jobs":
                 try:
                     message = getjobs()
                 except:
                     message = "Connection Error"
 
+            # 
             elif content[1].lower() == "currency":
                 if len(content) == 3 and content[2].lower() != "":
                    
@@ -163,12 +176,14 @@ class Master(object):
                 else:
                     message = "Please ask the query in correct format."
 
+            # TELLS JOKE
             elif content[1].lower() == "joke":
                 try:
                     message = lame_jokes()
                 except:
                     message = "Not that lame though .. try something else"
 
+            # WEATHER DETAILS
             elif content[1].lower() == "weather":
                 try:
                     if len(content) > 2 and content[2].lower() != "":
@@ -188,12 +203,37 @@ class Master(object):
                 except:
                     message = "Something went wrong"
 
+            # CONTEST DETAILS
             elif content[1].lower() == "contest":
                 try:
                     message = eventz()
                 except:
                     message = "Check connection"
-            
+                
+        
+            # CONTROL OF OTHER BOTS
+            # MASTER BOT CALLS THE SLAVE BOTS FOR WORK.
+
+            # Respective slave objects will be called reading the specified task
+            elif content[1].lower() in task1:
+                # call slave 1
+                s1 = Connection_tester_bot()
+                s1.process(msg)
+
+            elif content[1].lower() in task2:
+                # call slave 2
+                s2 = Component_bot()
+                s2.client.call_on_each_message(s2.process)
+
+            elif content[1].lower() in task3:
+                # call slave 3
+                s3 = Solder_bot()
+                s3.client.call_on_each_message(s3.process)
+
+            elif content[1].lower() in task4:
+                s4 = IC_bot()
+                s4.client.call_on_each_message(s4.process)
+
             else:
                 message += "Show news according to your choice : **Master news topic-name**\n"
                 message += "Show MeetUp group details and next event status : **Master meetup group-name**\n"
@@ -204,8 +244,6 @@ class Master(object):
                 message += "Get a list of new job openings in your locality: **Master jobs**\n"
                 message += "Translate a word or sentence to English: **Master translate word/sentence**\n"
                 message += "Check your pnr status: **Master pnr pnr-number**\n"
-                
-
 
            
             self.client.send_message({
