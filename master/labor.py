@@ -10,27 +10,11 @@ import threading
 import nltk
 
 from re import search
-
-class Slave(object):
-
-    def __init__(self):
-        self.client = zulip.Client(config_file="../slave1.zuliprc")
-        print("Slave bots called to work...")
-        
-        self.subscribe_all()
-
-    def subscribe_all(self):
-        json = self.client.get_streams()["streams"]
-        streams = [{"name": stream["name"]} for stream in json]
-        self.client.add_subscriptions(streams)
-
-    def process(self):
-        pass
         
         
 # slave1 activated for task1 
 # Task 1 : Test connections
-class Connection_tester_bot(Slave):
+class Connection_tester_bot():
     
     def __init__(self):
         self.labor_bot = zulip.Client(config_file="../arm1.zuliprc")
@@ -60,7 +44,7 @@ class Connection_tester_bot(Slave):
 
 # slave2 activated for task2
 # Task 2 : Connect Resistor's/LED's/Capacitor's
-class Component_bot(Slave):
+class Component_bot():
 
     def __init__(self):
         self.labor_bot = zulip.Client(config_file="../arm2.zuliprc")
@@ -79,7 +63,7 @@ class Component_bot(Slave):
 
         message = "Hi I am arm 2 under Master Control.\nI connnect various components like capacitor, resistor, led to the board."
         
-        print("labour bot 1 activate")
+        print("labour bot 2 activate")
 
         self.labor_bot.send_message({
             "type": "stream",
@@ -90,7 +74,7 @@ class Component_bot(Slave):
 
 # slave3 activated for task3
 # Task 3 : Solder
-class Solder_bot(Slave):
+class Solder_bot():
 
     def __init__(self):
         self.labor_bot = zulip.Client(config_file="../arm3.zuliprc")
@@ -109,7 +93,7 @@ class Solder_bot(Slave):
 
         message = "Hi I am arm 3 under Master Control.\nI solder everything."
         
-        print("labour bot 1 activate")
+        print("labour bot 3 activate")
 
         self.labor_bot.send_message({
             "type": "stream",
@@ -119,7 +103,7 @@ class Solder_bot(Slave):
         })
 # slave4 activated for task4
 # Task 4 : Connecct IC's
-class IC_bot(Slave):
+class IC_bot():
 
     def __init__(self):
         self.labor_bot = zulip.Client(config_file="../arm4.zuliprc")
@@ -147,14 +131,4 @@ class IC_bot(Slave):
             "content": message
         })
 
-def main():
-    sl = Slave() # base object
-    sl.client.call_on_each_message(sl.process)
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\nSayonara.")
-        sys.exit(0)
 
