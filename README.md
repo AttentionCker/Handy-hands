@@ -1,10 +1,12 @@
-## Handy-hands
-Zulip Bot 
+# Handy-hands
+## Zulip Bot 
 
 
- This Bot was created by team Dyknoww during ELECTROTHON.
+This Bot was created by team Dyknoww during ELECTROTHON.
 
 ## Features -
+#### Issue commands with ``` master ```
+
 1. Commands and Controls subordinate bots - 
 	``` master task1 ```
     
@@ -39,9 +41,12 @@ Zulip Bot
 8. Translate to English - 
 	``` master translate ```
     
-9. Update yourself with the upcoming coding contests - 
-	``` Ghost contest ```
+9. Check PNR status - 
+	``` master pnr <pnr-number> ```
     
+10. Show Meetup - 
+	``` master meetup <group-name> ```
+		
 
 ## Working - 
 - Create a [Zulip Realm](https://zulip.com/new/)
