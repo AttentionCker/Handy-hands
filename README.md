@@ -50,10 +50,11 @@ This Bot was created by team Dyknoww during ELECTROTHON.
 
 ## Working - 
 - Create a [Zulip Realm](https://zulip.com/new/)
-- Create a bot named Ghost from settings in gear box menu
-- Download the zuliprc file for your bot and place it in your home directory. Make sure it is of format ```.zuliprc```
-- Run the bot.py file ``` python3 bot.py ```
-- Go to your chat terminal and interact with ghost :)
+- Clone the Handy-Hand repo.
+- Create five bots one named master, and five named arm1, arm2, arm3, arm4 respectively from settings in gear box menu
+- Download the zuliprc file for your bot and place it in your current directory. Make sure it is of format ```*/.zuliprc```
+- Run the bot.py file ``` python3 bot.py ``` in your terminal
+- Go to your zulip realm and chat with the master, and see him assign tasks to other labor bots.
 
 ### Contributors - 
 1. [Mayank Singh](https://github.com/Dyknoww)

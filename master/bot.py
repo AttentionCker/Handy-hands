@@ -87,10 +87,10 @@ class Master(object):
 
             
             # task keywords for slaves
-            task1 = ["task1", "connections"]
-            task2 = ["task2", "connect-resistor", "connect-circuit", "connect-LED", "connect-capacitor", "connect-ciruit"]
-            task3 = ["task3", "solder"]
-            task4 = ["task4", "connect-IC"]
+            task1 = ["task1", "connections", "arm1"]
+            task2 = ["task2", "connect-resistor", "connect-circuit", "connect-LED", "connect-capacitor", "connect-ciruit", "arm2"]
+            task3 = ["task3", "solder","arm3"]
+            task4 = ["task4", "connect-IC", "arm4"]
             greet = ["hello", "hi","hola","hey","wassup"]
             news = ["news", "happenings"]
 
