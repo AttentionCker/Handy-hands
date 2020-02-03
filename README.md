@@ -9,17 +9,27 @@ This Bot was created by team Dyknoww during ELECTROTHON.
 
 1. Commands and Controls subordinate bots - 
 	``` master task1 ```
-    
 
+	***
+	
+	![](https://github.com/Addi-11/Handy-hands/blob/master/images/SC1.jpeg)
+	
+	---
+	
+	![](https://github.com/Addi-11/Handy-hands/blob/master/images/SC4.jpeg)
+	
+	--- 
+	
+	![](https://github.com/Addi-11/Handy-hands/blob/master/images/SC3.jpeg)
 
 2. Cracks Jokes - 
 	``` master joke ```
-    
+    ![](https://github.com/Addi-11/Handy-hands/blob/master/images/SC2.jpeg)
 
 
-3. Displays News - 
-	``` master news ```
-    
+3. Help command  - 
+	``` master help ```
+    ![](https://github.com/Addi-11/Handy-hands/blob/master/images/SC5.jpeg)
 
 
 4. Gets a list of incoming events - 
@@ -28,7 +38,7 @@ This Bot was created by team Dyknoww during ELECTROTHON.
 
 5. Gets weather report of a place - 
 	``` master weather ```
-    
+    ![](https://github.com/Addi-11/Handy-hands/images/SC5.jpg)
 
 6. Gets a list of Jobs - 
 	``` master jobs ```

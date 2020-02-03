@@ -5,6 +5,7 @@ import re
 import json
 import httplib2
 import os
+import requests
 # import math
 import threading
 import nltk
@@ -20,6 +21,7 @@ class Connection_tester_bot():
         self.labor_bot = zulip.Client(config_file="../arm1.zuliprc")
         print("Slave1 up for work.")  
         self.BOT_MAIL = "slave1-bot@zulipchat.com"
+        self.work_code = "0033"
         
     def subscribe_all(self):
         json = self.client.get_streams()["streams"]
@@ -34,6 +36,9 @@ class Connection_tester_bot():
         message = "Hi I am arm 1 under Master Control.\nI test for Connections."
         
         print("labour bot 1 activate")
+        # sending request to pi
+        r = requests.get("http://iot.smayank.com/iot?id=" + self.work_code)
+        print(r.status_code)
 
         self.labor_bot.send_message({
             "type": "stream",
@@ -50,6 +55,7 @@ class Component_bot():
         self.labor_bot = zulip.Client(config_file="../arm2.zuliprc")
         print("Slave1 up for work.")  
         self.BOT_MAIL = "slave2-bot@zulipchat.com"
+        self.work_code = "0045"
         
     def subscribe_all(self):
         json = self.client.get_streams()["streams"]
@@ -64,6 +70,9 @@ class Component_bot():
         message = "Hi I am arm 2 under Master Control.\nI connnect various components like capacitor, resistor, led to the board."
         
         print("labour bot 2 activate")
+        # sending request to pi
+        r = requests.get("http://iot.smayank.com/iot?id=" + self.work_code)
+        print(r.status_code)
 
         self.labor_bot.send_message({
             "type": "stream",
@@ -80,6 +89,7 @@ class Solder_bot():
         self.labor_bot = zulip.Client(config_file="../arm3.zuliprc")
         print("Slave1 up for work.")  
         self.BOT_MAIL = "slave3-bot@zulipchat.com"
+        self.work_code = "0067"
         
     def subscribe_all(self):
         json = self.client.get_streams()["streams"]
@@ -94,6 +104,9 @@ class Solder_bot():
         message = "Hi I am arm 3 under Master Control.\nI solder everything."
         
         print("labour bot 3 activate")
+        # sending request to pi
+        r = requests.get("http://iot.smayank.com/iot?id=" + self.work_code)
+        print(r.status_code)
 
         self.labor_bot.send_message({
             "type": "stream",
@@ -109,6 +122,7 @@ class IC_bot():
         self.labor_bot = zulip.Client(config_file="../arm4.zuliprc")
         print("Slave1 up for work.")  
         self.BOT_MAIL = "slave4-bot@zulipchat.com"
+        self.work_code = "0094"
         
     def subscribe_all(self):
         json = self.client.get_streams()["streams"]
@@ -123,6 +137,10 @@ class IC_bot():
         message = "Hi I am arm 4 under Master Control.\nI connects different IC's"
         
         print("labour bot 4 activate")
+
+        # sending request to pi
+        r = requests.get("http://iot.smayank.com/iot?id=" + self.work_code)
+        print(r.status_code)
 
         self.labor_bot.send_message({
             "type": "stream",
