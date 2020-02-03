@@ -9,18 +9,18 @@ This Bot was created by team Dyknoww during ELECTROTHON.
 
 1. Commands and Controls subordinate bots - 
 	``` master task1 ```
-	--  ![](https://github.com/Addi-11/Handy-hands/images/SC1.jpg)
-	--	![](https://github.com/Addi-11/Handy-hands/images/SC4.jpg)
-	-- 	![](https://github.com/Addi-11/Handy-hands/images/SC3.jpg)
+	--  ![](https://github.com/Addi-11/Handy-hands/tree/images/SC1.jpg)
+	--	![](https://github.com/Addi-11/Handy-hands/tree/images/SC4.jpg)
+	-- 	![](https://github.com/Addi-11/Handy-hands/tree/images/SC3.jpg)
 
 2. Cracks Jokes - 
 	``` master joke ```
-    ![](https://github.com/Addi-11/Handy-hands/images/SC2.jpg)
+    ![](https://github.com/Addi-11/Handy-hands/tree/images/SC2.jpg)
 
 
 3. Help command  - 
 	``` master help ```
-    ![](https://github.com/Addi-11/Handy-hands/images/SC5.jpg)
+    ![](https://github.com/Addi-11/Handy-hands/tree/images/SC5.jpg)
 
 
 4. Gets a list of incoming events - 
